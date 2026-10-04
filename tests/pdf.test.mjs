@@ -1,7 +1,31 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {parseLabPages} from '../dist/pdf-import.js';
+import {parseLabPages, readPdfTextItems} from '../dist/pdf-import.js';
+
+test('PDF Safari: поток без asyncIterator читается с сохранением порядка и координат',async()=>{
+  const chunks=[{items:[{str:'Гемоглобин',transform:[1,0,0,1,20,100]}]},
+    {items:[]},{items:[{str:'136',transform:[1,0,0,1,200,100]}]}];
+  const stream=new ReadableStream({start(controller){
+    for(const chunk of chunks)controller.enqueue(chunk);
+    controller.close();
+  }});
+  Object.defineProperty(stream,Symbol.asyncIterator,{value:undefined});
+  assert.equal(stream[Symbol.asyncIterator],undefined);
+  assert.deepEqual(await readPdfTextItems({streamTextContent:()=>stream}),chunks.flatMap(c=>c.items));
+  assert.equal(stream.locked,false);
+});
+
+test('PDF Safari: ошибка потока не превращается в частичный результат',async()=>{
+  let reads=0;
+  const failure=new Error('Ошибка чтения PDF');
+  const stream=new ReadableStream({pull(controller){
+    if(reads++===0)controller.enqueue({items:[{str:'136'}]});
+    else controller.error(failure);
+  }});
+  await assert.rejects(readPdfTextItems({streamTextContent:()=>stream}),e=>e===failure);
+  assert.equal(stream.locked,false);
+});
 
 const schema=JSON.parse(await readFile(new URL('../dist/schema.json',import.meta.url),'utf8'));
 // Полностью синтетические позиции и результаты, без данных реального пациента.
@@ -49,3 +73,4 @@ test('PDF: результат не включает посторонние ид�
   const r=parse([item('ФИО: УЧЕБНЫЙ ПРИМЕР',.04,.03),item('Полис: DEMO',.04,.05),...row('Гемоглобин общий','136','г/л')]);
   assert.doesNotMatch(JSON.stringify(r),/DEMO|ФИО|Полис|УЧЕБНЫЙ/);
 });
+

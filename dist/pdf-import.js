@@ -104,6 +104,23 @@ export function parseLabPages(pages, schema) {
 }
 
 let pdfLibrary;
+/** Safari может поддерживать getReader(), но не асинхронный перебор потока,
+ * используемый PDF.js в getTextContent(). Читаем те же блоки через reader,
+ * сохраняя порядок текста и координаты; глобальные API браузера не меняем. */
+export async function readPdfTextItems(page) {
+  const reader = page.streamTextContent().getReader();
+  const items = [];
+  try {
+    while (true) {
+      const {value, done} = await reader.read();
+      if (done) return items;
+      for (const item of value.items) items.push(item);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+}
+
 async function loadPdfLibrary() {
   if (!pdfLibrary) {
     pdfLibrary = (async () => {
@@ -138,8 +155,8 @@ export async function parseLabPDF(buffer, schema) {
         const page = await doc.getPage(n);
         if (page.rotate % 360) throw Error('В PDF есть повёрнутые страницы. Используйте исходный бланк или ручной ввод.');
         const viewport = page.getViewport({scale:1});
-        const text = await page.getTextContent();
-        const items = text.items.filter(i => i.str?.trim()).map(i => ({text:i.str,
+        const textItems = await readPdfTextItems(page);
+        const items = textItems.filter(i => i.str?.trim()).map(i => ({text:i.str,
           x:i.transform[4]/viewport.width, y:(viewport.height-i.transform[5])/viewport.height,
           width:i.width/viewport.width, height:i.height/viewport.height}));
         characters += items.reduce((sum,i)=>sum+i.text.length,0);
@@ -162,3 +179,4 @@ export async function parseLabPDF(buffer, schema) {
     await task?.destroy();
   }
 }
+
