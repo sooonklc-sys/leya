@@ -1,6 +1,6 @@
 # Оформление Леи
 
-Дизайн обновлён 4 октября 2026 года по визуальному референсу пользователя: молочная бумага, лесной зелёный, пастельный розовый, крупные выразительные заголовки и рисованная графика о заботе.
+В оформлении используются молочный фон, лесной зелёный, пастельный розовый, крупные выразительные заголовки и рисованная графика о заботе.
 
 ## Палитра и шрифты
 
@@ -13,11 +13,7 @@ Unbounded и Manrope загружены из официального репоз
 
 ## Иллюстрация
 
-Файл: `dist/assets/caring-conversation.png`, прозрачный PNG, 2097 × 750 пикселей. Создан инструментом ImageGen специально для этого сайта. Надписи выполнены средствами страницы, в иллюстрации текста нет.
-
-Промпт генерации:
-
-> Wide 3:1 editorial hand-drawn illustration of a doctor and two adults in a caring conversation about a paper lab sheet; irregular pencil lines and gouache texture, forest green/cream/pink/coral palette with tiny mustard and blue accents, sparse botanical foliage, transparent background. No text, numbers, logos, medical cross, syringes, blood, children, or website mockup.
+Файл: `dist/assets/caring-conversation.png`, прозрачный PNG, 2097 × 750 пикселей. Иллюстрация изображает беседу врача с двумя взрослыми о результатах анализов. Надписи выполнены средствами страницы, в иллюстрации текста нет.
 
 ## Проверка обновления
 
