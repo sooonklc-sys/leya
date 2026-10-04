@@ -1,0 +1,9 @@
+# Only runtime files enter the image and build context.
+**
+!Dockerfile
+!package.json
+!serve.mjs
+!config/
+!config/server.json
+!dist/
+!dist/**

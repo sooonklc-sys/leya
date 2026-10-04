@@ -1,12 +1,19 @@
 export const CLASS_NAMES={no_anemia_no_deficiency:'Нет анемии и дефицитов по разметке',latent_deficiency:'Дефицит железа без анемии',iron_deficiency_anemia:'Железодефицитная анемия',B12_deficiency_anemia:'B12-дефицитная анемия',B12_deficiency_no_anemia:'Дефицит B12 без анемии',folate_deficiency_anemia:'Фолат-дефицитная анемия',folate_deficiency_no_anemia:'Дефицит фолатов без анемии',B6_deficiency:'Дефицит B6',copper_deficiency:'Дефицит меди',mixed_deficiency:'Сочетание дефицитов',anemia_other:'Анемия другой / неуточнённой причины',inflammation_anemia:'Анемия воспалительного профиля'};
 export const TARGET_NAMES={iron_deficiency:'Железо',B12_deficiency:'Витамин B12',folate_deficiency:'Фолаты',B6_deficiency:'Витамин B6',copper_deficiency:'Медь',inflammation_anemia:'Воспалительный профиль'};
 export const SUPPORT={iron_deficiency:['ferritin','TSAT','CRP'],B12_deficiency:['vitamin_B12','active_B12','MMA'],folate_deficiency:['folate','vitamin_B12'],B6_deficiency:['vitamin_B6'],copper_deficiency:['copper','ceruloplasmin'],inflammation_anemia:['CRP','ferritin','TSAT']};
+/** Average exported tree leaf scores. Nulls use training medians; scores are not calibrated probabilities. */
 export function predictForest(forest,values){
  const x=forest.features.map((f,i)=>Math.fround(values[f]==null?forest.medians[i]:Number(values[f])));
  const sums=new Array(forest.classes.length).fill(0);
  for(const tree of forest.trees){let n=0;while(tree.left[n]!==-1)n=x[tree.feature[n]]<=tree.threshold[n]?tree.left[n]:tree.right[n];for(let k=0;k<sums.length;k++)sums[k]+=tree.value[n][k];}
  return sums.map(v=>v/forest.trees.length);
 }
+/**
+ * Pure calculation for validated numeric values (missing = null, sex = F/M).
+ * Hb assessment is independent of classification. Bounds describe training support,
+ * not clinical reference ranges. Missing required CBC or out-of-range data withhold classification.
+ * Return contract and the browser validation boundary: docs/INTERFACES.md.
+ */
 export function calculateReport(values,schema,model){
  const threshold=model.anemia_rule[values.sex],anemia=values.hemoglobin<threshold;
  const missingBasic=schema.basic.filter(x=>x!=='RDW').filter(k=>values[k]==null);
@@ -21,6 +28,7 @@ export function calculateReport(values,schema,model){
  const top=result.ranking[0];
  const classAnemia=top.name.includes('_no_anemia')||['latent_deficiency','no_anemia_no_deficiency'].includes(top.name)?false:['B6_deficiency','copper_deficiency'].includes(top.name)?null:true;
  result.contradiction=classAnemia!==null&&classAnemia!==anemia;
+ // Sensitivity to replacing one measurement with its training median, not causal attribution or SHAP.
  const targetIndex=chosen.classifier.classes.indexOf(top.name);
  result.influential=present.filter(f=>chosen.classifier.features.includes(f.key)).map(f=>({key:f.key,value:input[f.key],impact:Math.abs(top.score-predictForest(chosen.classifier,{...input,[f.key]:null})[targetIndex])})).sort((a,b)=>b.impact-a.impact).slice(0,5);
  return result;

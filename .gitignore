@@ -2,6 +2,7 @@
 *.xlsx
 !dist/template.csv
 !dist/template.xlsx
+!examples/*.csv
 __pycache__/
 node_modules/
 .sites-runtime/
@@ -19,5 +20,6 @@ release/
 *.log
 *.zip
 *.pdf
+!docs/presentation/*.pdf
 Thumbs.db
 .DS_Store

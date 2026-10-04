@@ -1,0 +1,4 @@
+age_years;sex;hemoglobin;RBC;hematocrit;MCV;MCH;MCHC;RDW;platelets;WBC;ferritin;TSAT;vitamin_B12;folate;CRP
+35;F;138;4.6;41.4;90;30;333;12.8;250;6.1;85;29;480;9;1.5
+29;F;127;4.8;39;81.3;26.5;326;15.4;340;6.5;8;6.5;450;8;1.2
+52;F;101;3.5;31.5;90;28.9;321;;230;5.3;;;;;

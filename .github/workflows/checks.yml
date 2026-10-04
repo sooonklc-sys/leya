@@ -16,3 +16,20 @@ jobs:
         with:
           name: hemonavigator-offline
           path: release/hemonavigator.html
+  container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Проверка конфигурации и сборка контейнера
+        run: |
+          docker compose -f config/compose.yaml config --quiet
+          docker compose -f config/compose.yaml build
+          docker compose -f config/compose.yaml up -d --wait --wait-timeout 90
+      - name: Проверка сайта в контейнере
+        run: |
+          curl --fail --silent http://127.0.0.1:8765/ -o /tmp/leya-index.html
+          grep -q 'Лея' /tmp/leya-index.html
+          test "$(curl -s -o /dev/null -w '%{http_code}' -X POST http://127.0.0.1:8765/)" = '405'
+      - name: Остановка контейнера
+        if: always()
+        run: docker compose -f config/compose.yaml down

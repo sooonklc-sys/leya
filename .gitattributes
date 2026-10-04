@@ -7,3 +7,7 @@
 *.yml text eol=lf
 *.png binary
 *.ttf binary
+*.pdf binary
+*.pptx binary
+*.yaml text eol=lf
+*.csv text eol=lf
