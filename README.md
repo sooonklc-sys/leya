@@ -34,8 +34,8 @@
 Скачайте репозиторий через **Code → Download ZIP**, распакуйте его и откройте терминал в папке с `package.json`. Либо клонируйте репозиторий, если у вас есть доступ:
 
 ```sh
-git clone https://github.com/sooonklc-sys/hemonavigator.git
-cd hemonavigator
+git clone https://github.com/sooonklc-sys/leya.git
+cd leya
 npm start
 ```
 
