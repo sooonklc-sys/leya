@@ -16,7 +16,7 @@
 | Пример без чувствительных данных | [examples/demo.csv](../examples/demo.csv) и его описание |
 | Комментарии к алгоритмам и интерфейсам | `dist/engine.js`, `dist/pdf-import.js`, `dist/import.js`, [INTERFACES](INTERFACES.md) |
 | Презентация с принципом работы, логикой и архитектурой | [PDF](presentation/leya.pdf), [PPTX](presentation/leya.pptx), [тезисы](presentation/README.md) |
-| Демонстрация на оборудовании команды и организатора | Автономный `release/hemonavigator.html`, [сценарий защиты](../DEMO.md) |
+| Демонстрация на оборудовании команды и организатора | Автономный `release/leya.html`, [сценарий защиты](../DEMO.md) |
 | Ссылка на готовый сервис для no-code/low-code | Приложение написано на JavaScript/Python. Для демонстрации предусмотрен автономный файл, постоянная внешняя ссылка не заявляется |
 
 ## Перед сдачей
