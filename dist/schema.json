@@ -1,0 +1,314 @@
+{
+  "fields": [
+    {
+      "key": "hemoglobin",
+      "label": "Концентрация гемоглобина",
+      "unit": "g/L",
+      "observed_min": 52.3,
+      "observed_max": 174.8,
+      "missing": 0
+    },
+    {
+      "key": "RBC",
+      "label": "Количество эритроцитов",
+      "unit": "10^12/L",
+      "observed_min": 2.02,
+      "observed_max": 6.68,
+      "missing": 0
+    },
+    {
+      "key": "hematocrit",
+      "label": "Гематокрит",
+      "unit": "%",
+      "observed_min": 17.9,
+      "observed_max": 53.6,
+      "missing": 0
+    },
+    {
+      "key": "MCV",
+      "label": "Средний объём эритроцита",
+      "unit": "fL",
+      "observed_min": 58.0,
+      "observed_max": 123.2,
+      "missing": 0
+    },
+    {
+      "key": "MCH",
+      "label": "Среднее содержание гемоглобина в эритроците",
+      "unit": "pg",
+      "observed_min": 16.7,
+      "observed_max": 40.7,
+      "missing": 0
+    },
+    {
+      "key": "MCHC",
+      "label": "Средняя концентрация гемоглобина в эритроците",
+      "unit": "g/L",
+      "observed_min": 270.0,
+      "observed_max": 359.9,
+      "missing": 0
+    },
+    {
+      "key": "RDW",
+      "label": "Ширина распределения эритроцитов по объёму",
+      "unit": "%",
+      "observed_min": 11.1,
+      "observed_max": 30.2,
+      "missing": 15
+    },
+    {
+      "key": "platelets",
+      "label": "Количество тромбоцитов",
+      "unit": "10^9/L",
+      "observed_min": 76.0,
+      "observed_max": 722.0,
+      "missing": 0
+    },
+    {
+      "key": "WBC",
+      "label": "Количество лейкоцитов",
+      "unit": "10^9/L",
+      "observed_min": 1.9,
+      "observed_max": 14.34,
+      "missing": 0
+    },
+    {
+      "key": "reticulocytes",
+      "label": "Ретикулоциты",
+      "unit": "%",
+      "observed_min": 0.3,
+      "observed_max": 2.2,
+      "missing": 439
+    },
+    {
+      "key": "ferritin",
+      "label": "Ферритин",
+      "unit": "µg/L",
+      "observed_min": 3.3,
+      "observed_max": 383.4,
+      "missing": 246
+    },
+    {
+      "key": "serum_iron",
+      "label": "Сывороточное железо",
+      "unit": "µmol/L",
+      "observed_min": 2.4,
+      "observed_max": 32.6,
+      "missing": 300
+    },
+    {
+      "key": "transferrin",
+      "label": "Трансферрин",
+      "unit": "g/L",
+      "observed_min": 1.31,
+      "observed_max": 4.33,
+      "missing": 300
+    },
+    {
+      "key": "TIBC",
+      "label": "Общая железосвязывающая способность сыворотки",
+      "unit": "µmol/L",
+      "observed_min": 31.1,
+      "observed_max": 109.2,
+      "missing": 300
+    },
+    {
+      "key": "UIBC",
+      "label": "Ненасыщенная железосвязывающая способность сыворотки",
+      "unit": "µmol/L",
+      "observed_min": 25.6,
+      "observed_max": 100.9,
+      "missing": 300
+    },
+    {
+      "key": "TSAT",
+      "label": "Насыщение трансферрина железом",
+      "unit": "%",
+      "observed_min": 3.5,
+      "observed_max": 41.9,
+      "missing": 300
+    },
+    {
+      "key": "sTfR",
+      "label": "Растворимый рецептор трансферрина",
+      "unit": "mg/L",
+      "observed_min": 0.84,
+      "observed_max": 6.39,
+      "missing": 588
+    },
+    {
+      "key": "Ret_He",
+      "label": "Гемоглобин ретикулоцитов",
+      "unit": "pg",
+      "observed_min": 19.1,
+      "observed_max": 36.8,
+      "missing": 614
+    },
+    {
+      "key": "vitamin_B12",
+      "label": "Витамин B12",
+      "unit": "pg/mL",
+      "observed_min": 85.0,
+      "observed_max": 950.0,
+      "missing": 327
+    },
+    {
+      "key": "active_B12",
+      "label": "Активный B12 (holotranscobalamin)",
+      "unit": "pmol/L",
+      "observed_min": 10.0,
+      "observed_max": 129.7,
+      "missing": 588
+    },
+    {
+      "key": "MMA",
+      "label": "Метилмалоновая кислота",
+      "unit": "µmol/L",
+      "observed_min": 0.103,
+      "observed_max": 1.28,
+      "missing": 568
+    },
+    {
+      "key": "homocysteine",
+      "label": "Гомоцистеин",
+      "unit": "µmol/L",
+      "observed_min": 7.3,
+      "observed_max": 42.0,
+      "missing": 542
+    },
+    {
+      "key": "folate",
+      "label": "Фолат сыворотки",
+      "unit": "ng/mL",
+      "observed_min": 1.2,
+      "observed_max": 15.9,
+      "missing": 385
+    },
+    {
+      "key": "vitamin_B6",
+      "label": "Витамин B6 (PLP)",
+      "unit": "nmol/L",
+      "observed_min": 5.1,
+      "observed_max": 94.1,
+      "missing": 705
+    },
+    {
+      "key": "copper",
+      "label": "Медь сыворотки",
+      "unit": "µmol/L",
+      "observed_min": 5.2,
+      "observed_max": 29.3,
+      "missing": 716
+    },
+    {
+      "key": "ceruloplasmin",
+      "label": "Церулоплазмин",
+      "unit": "g/L",
+      "observed_min": 0.09,
+      "observed_max": 0.49,
+      "missing": 709
+    },
+    {
+      "key": "CRP",
+      "label": "C-реактивный белок",
+      "unit": "mg/L",
+      "observed_min": 0.2,
+      "observed_max": 180.0,
+      "missing": 344
+    },
+    {
+      "key": "ESR",
+      "label": "Скорость оседания эритроцитов",
+      "unit": "mm/h",
+      "observed_min": 2.0,
+      "observed_max": 113.0,
+      "missing": 348
+    },
+    {
+      "key": "creatinine",
+      "label": "Креатинин",
+      "unit": "µmol/L",
+      "observed_min": 46.0,
+      "observed_max": 306.0,
+      "missing": 299
+    },
+    {
+      "key": "eGFR",
+      "label": "Расчётная скорость клубочковой фильтрации",
+      "unit": "mL/min/1.73m²",
+      "observed_min": 18.0,
+      "observed_max": 125.0,
+      "missing": 299
+    },
+    {
+      "key": "TSH",
+      "label": "Тиреотропный гормон",
+      "unit": "mIU/L",
+      "observed_min": 0.26,
+      "observed_max": 9.32,
+      "missing": 415
+    },
+    {
+      "key": "albumin",
+      "label": "Альбумин",
+      "unit": "g/L",
+      "observed_min": 24.8,
+      "observed_max": 49.4,
+      "missing": 296
+    },
+    {
+      "key": "LDH",
+      "label": "Лактатдегидрогеназа",
+      "unit": "U/L",
+      "observed_min": 111.0,
+      "observed_max": 595.0,
+      "missing": 515
+    },
+    {
+      "key": "indirect_bilirubin",
+      "label": "Непрямой билирубин",
+      "unit": "µmol/L",
+      "observed_min": 2.1,
+      "observed_max": 32.6,
+      "missing": 515
+    },
+    {
+      "key": "haptoglobin",
+      "label": "Гаптоглобин",
+      "unit": "g/L",
+      "observed_min": 0.16,
+      "observed_max": 2.1,
+      "missing": 494
+    }
+  ],
+  "basic": [
+    "hemoglobin",
+    "RBC",
+    "hematocrit",
+    "MCV",
+    "MCH",
+    "MCHC",
+    "RDW",
+    "platelets",
+    "WBC"
+  ],
+  "input_metadata": [
+    "age_years",
+    "sex"
+  ],
+  "ignored": [
+    "anemia",
+    "iron_deficiency",
+    "B12_deficiency",
+    "folate_deficiency",
+    "B6_deficiency",
+    "copper_deficiency",
+    "inflammation_anemia",
+    "mixed_deficiency",
+    "anemia_class",
+    "deficiency_cause",
+    "patient_id"
+  ],
+  "records": 840,
+  "range_source": "training_split_only"
+}

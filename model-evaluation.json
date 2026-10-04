@@ -1,0 +1,729 @@
+{
+  "version": "1.0.0",
+  "seed": 20261003,
+  "targets": [
+    "iron_deficiency",
+    "B12_deficiency",
+    "folate_deficiency",
+    "B6_deficiency",
+    "copper_deficiency",
+    "inflammation_anemia"
+  ],
+  "metrics": {
+    "cbc": {
+      "accuracy": 0.5238095238095238,
+      "macro_f1": 0.4380953006100005,
+      "cv_candidates": [
+        {
+          "depth": 7,
+          "leaf": 4,
+          "accuracy": 0.5285714285714286,
+          "macro_f1": 0.4527727321049025
+        },
+        {
+          "depth": 11,
+          "leaf": 2,
+          "accuracy": 0.5619047619047619,
+          "macro_f1": 0.4833971709026879
+        }
+      ],
+      "selected": {
+        "depth": 11,
+        "leaf": 2,
+        "accuracy": 0.5619047619047619,
+        "macro_f1": 0.4833971709026879
+      },
+      "per_class": {
+        "B12_deficiency_anemia": {
+          "precision": 0.3181818181818182,
+          "recall": 0.4375,
+          "f1-score": 0.3684210526315789,
+          "support": 16.0
+        },
+        "B12_deficiency_no_anemia": {
+          "precision": 0.5454545454545454,
+          "recall": 0.5,
+          "f1-score": 0.5217391304347826,
+          "support": 12.0
+        },
+        "B6_deficiency": {
+          "precision": 0.16666666666666666,
+          "recall": 0.1111111111111111,
+          "f1-score": 0.13333333333333333,
+          "support": 9.0
+        },
+        "anemia_other": {
+          "precision": 0.4166666666666667,
+          "recall": 0.5263157894736842,
+          "f1-score": 0.46511627906976744,
+          "support": 19.0
+        },
+        "copper_deficiency": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 9.0
+        },
+        "folate_deficiency_anemia": {
+          "precision": 0.2857142857142857,
+          "recall": 0.3333333333333333,
+          "f1-score": 0.3076923076923077,
+          "support": 12.0
+        },
+        "folate_deficiency_no_anemia": {
+          "precision": 0.3333333333333333,
+          "recall": 0.3,
+          "f1-score": 0.3157894736842105,
+          "support": 10.0
+        },
+        "inflammation_anemia": {
+          "precision": 0.47368421052631576,
+          "recall": 0.5625,
+          "f1-score": 0.5142857142857142,
+          "support": 16.0
+        },
+        "iron_deficiency_anemia": {
+          "precision": 0.6451612903225806,
+          "recall": 0.6896551724137931,
+          "f1-score": 0.6666666666666666,
+          "support": 29.0
+        },
+        "latent_deficiency": {
+          "precision": 0.6333333333333333,
+          "recall": 0.9047619047619048,
+          "f1-score": 0.7450980392156863,
+          "support": 21.0
+        },
+        "mixed_deficiency": {
+          "precision": 0.6470588235294118,
+          "recall": 0.3793103448275862,
+          "f1-score": 0.4782608695652174,
+          "support": 29.0
+        },
+        "no_anemia_no_deficiency": {
+          "precision": 0.7692307692307693,
+          "recall": 0.7142857142857143,
+          "f1-score": 0.7407407407407407,
+          "support": 28.0
+        },
+        "accuracy": 0.5238095238095238,
+        "macro avg": {
+          "precision": 0.4362071452466439,
+          "recall": 0.4548977808505939,
+          "f1-score": 0.4380953006100005,
+          "support": 210.0
+        },
+        "weighted avg": {
+          "precision": 0.5128891774929784,
+          "recall": 0.5238095238095238,
+          "f1-score": 0.5088680365826869,
+          "support": 210.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          7,
+          0,
+          0,
+          1,
+          0,
+          5,
+          0,
+          0,
+          1,
+          0,
+          2,
+          0
+        ],
+        [
+          0,
+          6,
+          0,
+          0,
+          0,
+          0,
+          4,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          2,
+          0,
+          0,
+          0,
+          3,
+          2,
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          2,
+          10,
+          0,
+          1,
+          0,
+          5,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          1,
+          4,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          3,
+          1,
+          1,
+          1,
+          1,
+          4,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          1,
+          2,
+          0,
+          0,
+          0,
+          0,
+          3,
+          0,
+          0,
+          1,
+          0,
+          3
+        ],
+        [
+          0,
+          0,
+          0,
+          3,
+          0,
+          1,
+          0,
+          9,
+          2,
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          0,
+          2,
+          20,
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          19,
+          0,
+          2
+        ],
+        [
+          8,
+          0,
+          0,
+          2,
+          0,
+          2,
+          0,
+          0,
+          6,
+          0,
+          11,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          7,
+          0,
+          20
+        ]
+      ],
+      "class_order": [
+        "B12_deficiency_anemia",
+        "B12_deficiency_no_anemia",
+        "B6_deficiency",
+        "anemia_other",
+        "copper_deficiency",
+        "folate_deficiency_anemia",
+        "folate_deficiency_no_anemia",
+        "inflammation_anemia",
+        "iron_deficiency_anemia",
+        "latent_deficiency",
+        "mixed_deficiency",
+        "no_anemia_no_deficiency"
+      ],
+      "deficits": {
+        "iron_deficiency": {
+          "positive_test_records": 71,
+          "recall": 0.8450704225352113,
+          "f1": 0.8391608391608392,
+          "nonanemic_positive_test_records": 21,
+          "nonanemic_recall": 0.9047619047619048
+        },
+        "B12_deficiency": {
+          "positive_test_records": 43,
+          "recall": 0.5581395348837209,
+          "f1": 0.5853658536585366,
+          "nonanemic_positive_test_records": 12,
+          "nonanemic_recall": 0.25
+        },
+        "folate_deficiency": {
+          "positive_test_records": 44,
+          "recall": 0.2727272727272727,
+          "f1": 0.3582089552238806,
+          "nonanemic_positive_test_records": 10,
+          "nonanemic_recall": 0.2
+        },
+        "B6_deficiency": {
+          "positive_test_records": 9,
+          "recall": 0.0,
+          "f1": 0.0,
+          "nonanemic_positive_test_records": 3,
+          "nonanemic_recall": 0.0
+        },
+        "copper_deficiency": {
+          "positive_test_records": 9,
+          "recall": 0.0,
+          "f1": 0.0,
+          "nonanemic_positive_test_records": 4,
+          "nonanemic_recall": 0.0
+        },
+        "inflammation_anemia": {
+          "positive_test_records": 16,
+          "recall": 0.4375,
+          "f1": 0.4666666666666667,
+          "nonanemic_positive_test_records": 0,
+          "nonanemic_recall": 0.0
+        }
+      },
+      "within_training_ranges_records": 209,
+      "outside_training_ranges_records": 1,
+      "within_training_ranges_scores": {
+        "accuracy": 0.5215311004784688,
+        "macro_f1": 0.43517132400181335
+      }
+    },
+    "extended": {
+      "accuracy": 0.8428571428571429,
+      "macro_f1": 0.8343263834963225,
+      "cv_candidates": [
+        {
+          "depth": 7,
+          "leaf": 4,
+          "accuracy": 0.8365079365079365,
+          "macro_f1": 0.8359569541616341
+        },
+        {
+          "depth": 11,
+          "leaf": 2,
+          "accuracy": 0.8634920634920635,
+          "macro_f1": 0.8604417431225441
+        }
+      ],
+      "selected": {
+        "depth": 11,
+        "leaf": 2,
+        "accuracy": 0.8634920634920635,
+        "macro_f1": 0.8604417431225441
+      },
+      "per_class": {
+        "B12_deficiency_anemia": {
+          "precision": 0.7647058823529411,
+          "recall": 0.8125,
+          "f1-score": 0.7878787878787878,
+          "support": 16.0
+        },
+        "B12_deficiency_no_anemia": {
+          "precision": 0.7857142857142857,
+          "recall": 0.9166666666666666,
+          "f1-score": 0.8461538461538461,
+          "support": 12.0
+        },
+        "B6_deficiency": {
+          "precision": 1.0,
+          "recall": 0.7777777777777778,
+          "f1-score": 0.875,
+          "support": 9.0
+        },
+        "anemia_other": {
+          "precision": 0.85,
+          "recall": 0.8947368421052632,
+          "f1-score": 0.8717948717948718,
+          "support": 19.0
+        },
+        "copper_deficiency": {
+          "precision": 0.8888888888888888,
+          "recall": 0.8888888888888888,
+          "f1-score": 0.8888888888888888,
+          "support": 9.0
+        },
+        "folate_deficiency_anemia": {
+          "precision": 0.5714285714285714,
+          "recall": 0.6666666666666666,
+          "f1-score": 0.6153846153846154,
+          "support": 12.0
+        },
+        "folate_deficiency_no_anemia": {
+          "precision": 0.8571428571428571,
+          "recall": 0.6,
+          "f1-score": 0.7058823529411765,
+          "support": 10.0
+        },
+        "inflammation_anemia": {
+          "precision": 0.9411764705882353,
+          "recall": 1.0,
+          "f1-score": 0.9696969696969697,
+          "support": 16.0
+        },
+        "iron_deficiency_anemia": {
+          "precision": 0.7878787878787878,
+          "recall": 0.896551724137931,
+          "f1-score": 0.8387096774193549,
+          "support": 29.0
+        },
+        "latent_deficiency": {
+          "precision": 1.0,
+          "recall": 0.9523809523809523,
+          "f1-score": 0.975609756097561,
+          "support": 21.0
+        },
+        "mixed_deficiency": {
+          "precision": 0.8181818181818182,
+          "recall": 0.6206896551724138,
+          "f1-score": 0.7058823529411765,
+          "support": 29.0
+        },
+        "no_anemia_no_deficiency": {
+          "precision": 0.9,
+          "recall": 0.9642857142857143,
+          "f1-score": 0.9310344827586207,
+          "support": 28.0
+        },
+        "accuracy": 0.8428571428571429,
+        "macro avg": {
+          "precision": 0.8470931301813657,
+          "recall": 0.8325954073401896,
+          "f1-score": 0.8343263834963225,
+          "support": 210.0
+        },
+        "weighted avg": {
+          "precision": 0.8479858003807582,
+          "recall": 0.8428571428571429,
+          "f1-score": 0.8405120906139693,
+          "support": 210.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          13,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          11,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          7,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          17,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          8,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          2,
+          1,
+          8,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          2,
+          6,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          16,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          26,
+          0,
+          3,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          20,
+          0,
+          1
+        ],
+        [
+          4,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          6,
+          0,
+          18,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          27
+        ]
+      ],
+      "class_order": [
+        "B12_deficiency_anemia",
+        "B12_deficiency_no_anemia",
+        "B6_deficiency",
+        "anemia_other",
+        "copper_deficiency",
+        "folate_deficiency_anemia",
+        "folate_deficiency_no_anemia",
+        "inflammation_anemia",
+        "iron_deficiency_anemia",
+        "latent_deficiency",
+        "mixed_deficiency",
+        "no_anemia_no_deficiency"
+      ],
+      "deficits": {
+        "iron_deficiency": {
+          "positive_test_records": 71,
+          "recall": 0.9577464788732394,
+          "f1": 0.9784172661870504,
+          "nonanemic_positive_test_records": 21,
+          "nonanemic_recall": 0.9523809523809523
+        },
+        "B12_deficiency": {
+          "positive_test_records": 43,
+          "recall": 0.9534883720930233,
+          "f1": 0.9647058823529412,
+          "nonanemic_positive_test_records": 12,
+          "nonanemic_recall": 1.0
+        },
+        "folate_deficiency": {
+          "positive_test_records": 44,
+          "recall": 0.7272727272727273,
+          "f1": 0.8205128205128205,
+          "nonanemic_positive_test_records": 10,
+          "nonanemic_recall": 0.7
+        },
+        "B6_deficiency": {
+          "positive_test_records": 9,
+          "recall": 0.6666666666666666,
+          "f1": 0.8,
+          "nonanemic_positive_test_records": 3,
+          "nonanemic_recall": 1.0
+        },
+        "copper_deficiency": {
+          "positive_test_records": 9,
+          "recall": 0.6666666666666666,
+          "f1": 0.8,
+          "nonanemic_positive_test_records": 4,
+          "nonanemic_recall": 0.75
+        },
+        "inflammation_anemia": {
+          "positive_test_records": 16,
+          "recall": 1.0,
+          "f1": 1.0,
+          "nonanemic_positive_test_records": 0,
+          "nonanemic_recall": 0.0
+        }
+      },
+      "extra_mask_50pct": {
+        "accuracy": 0.6619047619047619,
+        "macro_f1": 0.608580328548771
+      },
+      "within_training_ranges_records": 201,
+      "outside_training_ranges_records": 9,
+      "within_training_ranges_scores": {
+        "accuracy": 0.8407960199004975,
+        "macro_f1": 0.832353875579007
+      }
+    }
+  },
+  "total_records": 840,
+  "train_records": 630,
+  "test_records": 210,
+  "anemia_rule": {
+    "F": 120,
+    "M": 130
+  },
+  "missingness_only_metrics": {
+    "accuracy": 0.2571428571428571,
+    "macro_f1": 0.1664941977943583
+  },
+  "limitations": [
+    "One small supplied dataset; provenance and label verification are not documented.",
+    "Single stratified 25% holdout; model selection on training-only 4-fold CV.",
+    "No external clinical validation or probability calibration.",
+    "Missingness is associated with labels; ordering-pattern shortcut risk.",
+    "The deployed models are trained on 630 rows; the 210-row holdout is not used for fitting.",
+    "Unit dictionary does not provide clinical reference intervals."
+  ],
+  "data_sha256": "9d97e125c961a92222eb31c86188ba7a7736ece1ba59ce296d32e300b107dbb6",
+  "sklearn_version": "1.9.1"
+}

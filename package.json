@@ -1,0 +1,13 @@
+{
+  "name": "hemonavigator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "ГемоНавигатор — исследовательский MVP для разбора анализов и подготовки памятки пациенту",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node serve.mjs",
+    "build": "node build-offline.mjs release/hemonavigator.html",
+    "test": "node --test tests/*.test.mjs"
+  }
+}
