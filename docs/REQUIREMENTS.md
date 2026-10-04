@@ -8,13 +8,13 @@
 | Окружение, зависимости, запуск и развёртывание | [DEPLOYMENT](DEPLOYMENT.md) |
 | Входные и выходные данные, API при наличии | [DATA](DATA.md), [INTERFACES](INTERFACES.md) |
 | Медицинские особенности и ограничения | [MODEL_CARD](MODEL_CARD.md), [MEDICAL_AND_PRIVACY](MEDICAL_AND_PRIVACY.md) |
-| Структура каталогов и исходники приложения | `dist/`, `training/`, дерево в README |
+| Структура каталогов и исходники приложения | `dist/`, `training/`, описание в ARCHITECTURE.md |
 | Docker и команды запуска | `Dockerfile`, `config/compose.yaml`, `.dockerignore` |
 | Конфигурационные файлы в отдельной папке | `config/`; стандартные файлы инструментов остаются на требуемых ими местах |
 | Тесты | `tests/`, [TESTING](TESTING.md), GitHub Actions |
 | Документация и пояснения | `docs/`, `DEMO.md`, `DESIGN.md` |
 | Пример без чувствительных данных | [examples/demo.csv](../examples/demo.csv) и его описание |
-| Комментарии к алгоритмам и интерфейсам | `dist/engine.js`, `dist/import.js`, [INTERFACES](INTERFACES.md) |
+| Комментарии к алгоритмам и интерфейсам | `dist/engine.js`, `dist/pdf-import.js`, `dist/import.js`, [INTERFACES](INTERFACES.md) |
 | Презентация с принципом работы, логикой и архитектурой | [PDF](presentation/leya.pdf), [PPTX](presentation/leya.pptx), [тезисы](presentation/README.md) |
 | Демонстрация на оборудовании команды и организатора | Автономный `release/hemonavigator.html`, [сценарий защиты](../DEMO.md) |
 | Ссылка на готовый сервис для no-code/low-code | Приложение написано на JavaScript/Python. Для демонстрации предусмотрен автономный файл, постоянная внешняя ссылка не заявляется |

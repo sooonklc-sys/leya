@@ -11,6 +11,9 @@ test('Сервер выдаёт сайт, не принимает загрузк
     assert.equal(home.status, 200);
     assert.match(await home.text(), /Лея/);
     assert.equal((await fetch(url + '/schema.json')).status, 200);
+    const pdfModule = await fetch(url + '/vendor/pdf.min.mjs');
+    assert.equal(pdfModule.status, 200);
+    assert.match(pdfModule.headers.get('content-type'), /text\/javascript/);
     assert.equal((await fetch(url + '/README.md')).status, 404);
     assert.equal((await fetch(url + '/%2e%2e%2fpackage.json')).status, 403);
     assert.equal((await fetch(url, {method: 'POST', body: 'synthetic'})).status, 405);

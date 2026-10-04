@@ -1,9 +1,11 @@
 import{doctorOverview,setupMemo}from'./workflow.js';
 import{calculateReport,CLASS_NAMES,TARGET_NAMES,SUPPORT}from'./engine.js';
-import{parseCSV,parseXLSX,rowsToRecords,spreadsheetDateIssues}from'./import.js';
+import{spreadsheetDateIssues}from'./import.js';
+import{parseLabPDF}from'./pdf-import.js';
 import{UNITS_RU,LABELS_RU,inputLabel}from'./localization.js';
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let schema,model,mode='doctor',lastReport=null,records=[],memo;
+let pendingPdf=null, importVersion=0;
 const emptyHTML=$('#report').innerHTML;
 const EXAMPLES={normal:{age_years:35,sex:'F',hemoglobin:138,RBC:4.6,hematocrit:41.4,MCV:90,MCH:30,MCHC:333,RDW:12.8,platelets:250,WBC:6.1,ferritin:85,TSAT:29,vitamin_B12:480,folate:9,CRP:1.5},latent:{age_years:29,sex:'F',hemoglobin:127,RBC:4.8,hematocrit:39,MCV:81.3,MCH:26.5,MCHC:326,RDW:15.4,platelets:340,WBC:6.5,ferritin:8,serum_iron:6,transferrin:3.7,TIBC:92,UIBC:86,TSAT:6.5,CRP:1.2,vitamin_B12:450,folate:8},mixed:{age_years:52,sex:'F',hemoglobin:101,RBC:3.5,hematocrit:31.5,MCV:90,MCH:28.9,MCHC:321,RDW:22,platelets:230,WBC:5.3,ferritin:9,TSAT:8,vitamin_B12:120,active_B12:18,MMA:.75,homocysteine:25,folate:8,CRP:1.3}};
 const GROUPS=[['Общий анализ крови',['hemoglobin','RBC','hematocrit','MCV','MCH','MCHC','RDW','platelets','WBC']],['Ретикулоциты — дополнительные исследования',['reticulocytes','Ret_He']],['Обмен железа',['ferritin','serum_iron','transferrin','TIBC','UIBC','TSAT','sTfR']],['Витамины и микроэлементы',['vitamin_B12','active_B12','MMA','homocysteine','folate','vitamin_B6','copper','ceruloplasmin']],['Воспаление и другие показатели',['CRP','ESR','creatinine','eGFR','TSH','albumin','LDH','indirect_bilirubin','haptoglobin']]];
@@ -19,7 +21,7 @@ function updateSpreadsheetWarnings(){
 }
 function invalidate(){memo?.reset();updateSpreadsheetWarnings();if(lastReport){$('#report').innerHTML='<div class="stale">Данные изменились. Нажмите «Проанализировать», чтобы обновить отчёт.</div>'+emptyHTML;lastReport=null;}updateCount();}
 function updateCount(){if(!schema)return;const n=schema.fields.filter(f=>$('#'+f.key)?.value.trim()).length;$('#filled-count').textContent=`${n} из ${schema.fields.length} показателей`;for(const[i,[,keys]]of GROUPS.entries())$(`#group-${i}-count`).textContent=`${keys.filter(k=>$('#'+k)?.value.trim()).length} / ${keys.length}`;}
-function fill(values){$('#analysis-form').reset();for(const key of ['age_years','sex',...schema.fields.map(f=>f.key)])if(values[key]!=null)$('#'+key).value=String(values[key]);for(const el of document.querySelectorAll('[aria-invalid]'))el.removeAttribute('aria-invalid');$('#form-errors').hidden=true;invalidate();}
+function fill(values){clearPdfReview();$('#analysis-form').reset();for(const key of ['age_years','sex',...schema.fields.map(f=>f.key)])if(values[key]!=null)$('#'+key).value=String(values[key]);for(const el of document.querySelectorAll('[aria-invalid]'))el.removeAttribute('aria-invalid');$('#form-errors').hidden=true;invalidate();}
 function parseValues(){const values={},errors=[];for(const key of ['age_years',...schema.fields.map(f=>f.key)]){const el=$('#'+key);el.removeAttribute('aria-invalid');let v=el.value.trim();if(!v){values[key]=null;continue;}v=v.replace(',','.');if(!/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(v)||!Number.isFinite(Number(v))){errors.push(`${key==='age_years'?'Возраст':field(key).label}: введите число без единиц измерения.`);el.setAttribute('aria-invalid','true');continue;}values[key]=Number(v);if(key==='age_years'&&(!Number.isInteger(values[key])||values[key]<18||values[key]>93)){errors.push('Прототип рассчитан на возраст от 18 до 93 лет.');el.setAttribute('aria-invalid','true');}else if(values[key]===0&&!['CRP','ESR','reticulocytes','indirect_bilirubin'].includes(key)){errors.push(`${key==='age_years'?'Возраст':field(key).label}: ноль не принимается как результат. Неизвестное значение оставьте пустым.`);el.setAttribute('aria-invalid','true');}}
 for(const issue of updateSpreadsheetWarnings())errors.push(issue.message);values.sex=$('#sex').value;if(!['F','M'].includes(values.sex))errors.push('Укажите пол для оценки гемоглобина.');if(values.age_years===null)errors.push('Укажите возраст.');if(values.hemoglobin===null)errors.push('Укажите гемоглобин в г/л.');return{values,errors};}
 function listNames(keys){return keys.map(k=>field(k)?.label??k).join(', ');}
@@ -44,12 +46,79 @@ if(doctor&&!r.withheld){const m=model.metrics[r.variant];html+=`<details class="
 if(doctor){html+=`<details class="result-card"><summary>Все представленные значения</summary><table class="report-table"><tbody>${schema.fields.filter(f=>r.values[f.key]!=null).map(f=>`<tr><td>${esc(f.label)}</td><td>${fmt(r.values[f.key])} ${esc(f.unit)}</td></tr>`).join('')}</tbody></table><p class="micro">Клинические референсы зависят от метода и лаборатории. В словаре кейса они не предоставлены.</p></details>`;}
 html+='</details>';$('#report').innerHTML=html;$('#prepare-memo').onclick=()=>memo.prepare();
 }
-function analyze(){if(!model)return;memo?.reset();const{values,errors}=parseValues();if(errors.length){$('#form-errors').innerHTML=errors.map(esc).join('<br>');$('#form-errors').hidden=false;lastReport=null;$('#report').innerHTML='<div class="stale">Исправьте ошибки ввода перед анализом.</div>'+emptyHTML;$('#form-errors').scrollIntoView({behavior:'smooth',block:'center'});return;}$('#form-errors').hidden=true;lastReport=calculateReport(values,schema,model);renderReport(lastReport);if(innerWidth<761)$('#report').scrollIntoView({behavior:'smooth',block:'start'});return lastReport;}
-async function importFile(file){if(!file)return;if(file.size>5*1024*1024)throw Error('Размер файла — не больше 5 МБ.');const extension=file.name.split('.').pop().toLowerCase();let rows;if(extension==='csv'){const bytes=await file.arrayBuffer();let text=new TextDecoder('utf-8',{fatal:false}).decode(bytes);if(text.includes('\uFFFD'))text=new TextDecoder('windows-1251').decode(bytes);rows=parseCSV(text);}else if(extension==='xlsx')rows=await parseXLSX(await file.arrayBuffer());else throw Error('Поддерживаются CSV и XLSX. PDF, фото и старый XLS пока не распознаются.');const parsed=rowsToRecords(rows,schema);records=parsed.records;$('#record-select').replaceChildren(...records.map((r,i)=>new Option(`Запись ${i+1}`,String(i))));$('#record-picker').hidden=records.length<2;fill(records[0]);status(`Загружено записей: ${records.length}. Проверьте значения и единицы; шаблон использует единицы из словаря кейса.${parsed.ignored.length?' Диагностические метки и идентификаторы проигнорированы.':''}${parsed.unknown.length?' Неизвестные столбцы не использованы: '+parsed.unknown.join(', ')+'.':''}`);}
+function analyze(){if(!model)return;if(pendingPdf){status('Сначала проверьте показатели из PDF и перенесите их в форму либо отмените загрузку.');return;}memo?.reset();const{values,errors}=parseValues();if(errors.length){$('#form-errors').innerHTML=errors.map(esc).join('<br>');$('#form-errors').hidden=false;lastReport=null;$('#report').innerHTML='<div class="stale">Исправьте ошибки ввода перед анализом.</div>'+emptyHTML;$('#form-errors').scrollIntoView({behavior:'smooth',block:'center'});return;}$('#form-errors').hidden=true;lastReport=calculateReport(values,schema,model);renderReport(lastReport);if(innerWidth<761)$('#report').scrollIntoView({behavior:'smooth',block:'start'});return lastReport;}
+function clearPdfReview() {
+  importVersion++;
+  pendingPdf=null;
+  $('#pdf-review').hidden=true;
+  $('#pdf-values').replaceChildren();
+  $('#pdf-reviewed').checked=false;
+  $('#pdf-apply').disabled=true;
+  if(model) $('#analyze-button').disabled=false;
+}
+
+function showPdfReview(parsed) {
+  pendingPdf=parsed;
+  $('#pdf-summary').textContent=`Прочитано страниц: ${parsed.pages}. Найдено показателей для формы: ${parsed.measurements.length}. Сверьте каждую строку с исходным PDF. При необходимости исправьте число или очистите поле.`;
+  $('#pdf-values').innerHTML=parsed.measurements.map(m=>`<tr><td><label for="pdf-value-${esc(m.key)}">${esc(inputLabel(field(m.key)))}</label><span class="micro">Страница ${m.page}</span></td><td><input id="pdf-value-${esc(m.key)}" data-pdf-key="${esc(m.key)}" type="text" inputmode="decimal" value="${esc(m.value)}" autocomplete="off"><span class="micro">${esc(m.unit)}</span></td></tr>`).join('');
+  $('#pdf-warnings').textContent=parsed.warnings.join(' ');
+  $('#pdf-warnings').hidden=!parsed.warnings.length;
+  $('#pdf-ignored').textContent=parsed.ignored?`Строк, не сопоставленных с полями сервиса: ${parsed.ignored}. Они не будут перенесены. Если нужный показатель пропущен, добавьте его вручную после переноса.`:'';
+  $('#pdf-review-error').hidden=true;
+  $('#pdf-review').hidden=false;
+  $('#analyze-button').disabled=true;
+  $('#pdf-review').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+async function importFile(file) {
+  if(!file) return;
+  if(file.name.split('.').pop().toLowerCase()!=='pdf') throw Error('Выберите PDF с результатами лаборатории. Таблицы Excel и CSV больше не загружаются через эту форму; значения можно ввести вручную.');
+  if(file.size>5*1024*1024) throw Error('Размер файла — не больше 5 МБ.');
+  clearPdfReview();
+  const version=importVersion;
+  invalidate();
+  $('#upload-button').disabled=true;
+  $('#analyze-button').disabled=true;
+  status('Читаем PDF в вашем браузере…');
+  try {
+    const parsed=await parseLabPDF(await file.arrayBuffer(),schema);
+    if(version!==importVersion) return;
+    showPdfReview(parsed);
+    status('PDF прочитан. Проверьте извлечённые результаты перед переносом в форму.');
+  } finally {
+    $('#upload-button').disabled=false;
+    if(!pendingPdf) $('#analyze-button').disabled=false;
+  }
+}
+
+function applyPdfReview() {
+  if(!pendingPdf || !$('#pdf-reviewed').checked) return;
+  const values={};
+  for(const el of document.querySelectorAll('[data-pdf-key]')) {
+    const value=el.value.trim().replace(',','.');
+    if(value && (!/^\d+(?:\.\d+)?$/.test(value) || !Number.isFinite(Number(value)))) {
+      $('#pdf-review-error').textContent='Введите числовые результаты без единиц или оставьте неизвестные поля пустыми.';
+      $('#pdf-review-error').hidden=false;
+      el.focus();
+      return;
+    }
+    values[el.dataset.pdfKey]=value;
+  }
+  records=[];
+  $('#record-picker').hidden=true;
+  fill(values);
+  status('Проверенные показатели перенесены. Укажите возраст и пол, при необходимости добавьте недостающие анализы и нажмите «Проанализировать».');
+  $('#age_years').focus();
+}
+
 function renderMethod(){const a=model.metrics.extended,b=model.metrics.cbc;$('#method-content').innerHTML=`<p>Наличие анемии определяется правилом из кейса: Hb менее 120 г/л для женщин и 130 г/л для мужчин. Это упрощённые пороги задания; прототип не учитывает беременность, высоту проживания и другие клинические поправки.</p><div class="stat-row"><div><strong>${pct(a.accuracy)}</strong>12 классов · расширенные анализы</div><div><strong>${pct(b.accuracy)}</strong>12 классов · только ОАК</div><div><strong>210</strong>записей в отдельном тесте</div></div><p>Всего 840 записей, обучение на 630. Настройки выбраны по четырём проверкам внутри обучающей части. Тест не использован для обучения. Средняя F1 по группам: ${a.macro_f1.toFixed(2)} и ${b.macro_f1.toFixed(2)} соответственно. При дополнительном случайном удалении половины расширенных анализов доля верных ответов составила ${pct(a.extra_mask_50pct.accuracy)}.</p><p>Две модели «случайный лес» и отдельные оценки дефицитов. Пропуски заменяются медианами обучения. Одно лишь наличие/отсутствие анализов позволяло угадать группу в ${pct(model.missingness_only_metrics.accuracy)} случаев — назначения исследований связаны с диагнозами, что может искажать качество. Происхождение данных и порядок подтверждения разметки не документированы.</p><p>Качество на реальных пациентах неизвестно. Баллы не откалиброваны; редких состояний в тесте мало. Модель не исключает болезни и не назначает лечение. Основной разбор предназначен врачу. На его основе можно подготовить, отредактировать и распечатать памятку пациенту.</p><p>Файлы анализов читаются локально. Приложение не отправляет введённые значения на сервер, не использует аналитику и не сохраняет их после перезагрузки страницы.</p><p>Основания: <a href="https://www.who.int/publications/i/item/9789240088542" target="_blank" rel="noopener">пороговые значения Hb, ВОЗ</a>; <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8515119/" target="_blank" rel="noopener">обмен железа, BSG</a>; <a href="https://www.nice.org.uk/guidance/ng239/chapter/recommendations" target="_blank" rel="noopener">диагностика B12, NICE</a>. Рекомендации по следующему шагу ограничены обсуждением дообследования с врачом.</p>`;}
 async function initialize(){try{[schema,model]=globalThis.HEMO_PRELOADED??await Promise.all(['schema.json','model.json'].map(async url=>{const r=await fetch(url);if(!r.ok)throw Error('Не удалось загрузить данные модели. Обновите страницу.');return r.json();}));for(const f of schema.fields){f.original_label=f.label;f.label=LABELS_RU[f.key]??f.label;f.unit=UNITS_RU[f.unit]??f.unit;}$('#lab-fields').innerHTML=GROUPS.map(([title,keys],i)=>`<details class="lab-group" ${i===0?'open':''}><summary>${esc(title)}<span id="group-${i}-count"></span></summary><div class="fields-grid">${keys.map(k=>{const f=field(k);return`<label for="${k}"><span class="field-label"><span>${esc(inputLabel(f))}${k==='RDW'?' <span class="optional">— необязательно</span>':''}</span><span class="unit">${esc(f.unit)}</span></span><input id="${k}" name="${k}" type="text" inputmode="decimal" autocomplete="off" placeholder="Нет данных" aria-describedby="hint-${k}"><span class="field-hint" id="hint-${k}">${esc(k==='hemoglobin'?'Обязателен для оценки анемии':k==='RDW'?'Необязателен. Если в бланке нет RDW-CV (%), оставьте пустым. RDW-SD в фл сюда не вводите.':['reticulocytes','Ret_He'].includes(k)?'Отдельное исследование. Если не сдавали, оставьте пустым':'Если есть в вашем бланке')}</span></label>`;}).join('')}</div></details>`).join('');$('#analyze-button').disabled=false;updateCount();renderMethod();
 memo=setupMemo(()=>lastReport,schema);
 for(const b of document.querySelectorAll('[data-example]'))b.onclick=()=>{records=[];$('#record-picker').hidden=true;fill(EXAMPLES[b.dataset.example]);status('Учебный пример: значения составлены для демонстрации, это не запись реального пациента. Проверьте их и нажмите «Проанализировать».');};
+$('#pdf-reviewed').onchange=e=>{$('#pdf-apply').disabled=!e.target.checked;};
+$('#pdf-values').addEventListener('input',()=>{$('#pdf-reviewed').checked=false;$('#pdf-apply').disabled=true;});
+$('#pdf-apply').onclick=applyPdfReview;
+$('#pdf-cancel').onclick=()=>{clearPdfReview();status('Загрузка отменена. Можно ввести показатели вручную.');};
 $('#upload-button').onclick=()=>$('#file-input').click();$('#analysis-form').addEventListener('input',invalidate);$('#analysis-form').addEventListener('change',invalidate);$('#analysis-form').onsubmit=e=>{e.preventDefault();analyze();};$('#reset-button').onclick=()=>{fill({});lastReport=null;$('#report').innerHTML=emptyHTML;$('#record-picker').hidden=true;records=[];status('');$('#file-input').value='';};$('#record-select').onchange=e=>fill(records[Number(e.target.value)]);$('#file-input').onchange=async e=>{try{await importFile(e.target.files[0]);}catch(err){status(err.message);}finally{e.target.value='';}};
 const context=document.modelContext;if(context?.registerTool){const lifecycle=new AbortController();context.registerTool({name:'stage_lab_values',title:'Заполнить показатели анализов',description:'Заполняет форму, но не запускает анализ. Значения задаются в единицах словаря кейса.',inputSchema:{type:'object',properties:{values:{type:'object',properties:Object.fromEntries(['age_years','sex',...schema.fields.map(f=>f.key)].map(k=>[k,k==='sex'?{type:'string',enum:['F','M']}:{type:['number','null']}])),additionalProperties:false}},required:['values'],additionalProperties:false},annotations:{readOnlyHint:false},execute(input){if(!input||typeof input.values!=='object'||input.values===null||Array.isArray(input.values))throw Error('Ожидается объект values.');const valid=new Set(['age_years','sex',...schema.fields.map(f=>f.key)]);for(const[k,v]of Object.entries(input.values)){if(!valid.has(k)||k==='sex'&&!['F','M'].includes(v)||k!=='sex'&&v!==null&&(typeof v!=='number'||!Number.isFinite(v)||v<0))throw Error('Некорректное поле или значение.');}fill(input.values);return{staged:true,analysisRun:false};}},{signal:lifecycle.signal});addEventListener('pagehide',()=>lifecycle.abort(),{once:true});}
 }catch(error){$('#lab-fields').innerHTML='<p class="error">'+esc(error.message)+'</p>';}}
