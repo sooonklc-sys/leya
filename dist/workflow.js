@@ -63,7 +63,7 @@ export function setupMemo(getReport,schema){
   editor.hidden=false;review.checked=false;update();resize();
  }editor.scrollIntoView({behavior:'smooth',block:'start'});el('memo-findings').focus({preventScroll:true});}
  function preparePrint(){printArea.replaceChildren();const r=getReport();const add=(tag,text)=>{const node=document.createElement(tag);node.textContent=text;printArea.append(node);};
-  add('h1','ГемоНавигатор · Памятка по анализам');
+  add('h1','Лея · Памятка по анализам');
   if(!r||editor.hidden){add('p','Памятка ещё не подготовлена. Сначала проанализируйте данные и подготовьте объяснение для пациента.');return;}
   add('p',review.checked?'Содержание проверено пользователем перед печатью.':'ЧЕРНОВИК — содержание не проверено.');
   add('p',`Возраст: ${r.values.age_years} · ${r.values.sex==='F'?'Женский':'Мужской'} пол · Гемоглобин: ${new Intl.NumberFormat('ru-RU').format(r.values.hemoglobin)} г/л`);
