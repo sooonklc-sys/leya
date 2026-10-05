@@ -1,3 +1,4 @@
+// Раздаёт статические файлы из dist по HTTP, принимая только GET и HEAD.
 import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
