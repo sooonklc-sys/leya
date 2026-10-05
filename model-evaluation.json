@@ -9,6 +9,7 @@
     "copper_deficiency",
     "inflammation_anemia"
   ],
+
   "metrics": {
     "cbc": {
       "accuracy": 0.5238095238095238,
@@ -716,6 +717,7 @@
     "accuracy": 0.2571428571428571,
     "macro_f1": 0.1664941977943583
   },
+
   "limitations": [
     "One small supplied dataset; provenance and label verification are not documented.",
     "Single stratified 25% holdout; model selection on training-only 4-fold CV.",
