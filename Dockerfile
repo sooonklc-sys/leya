@@ -1,3 +1,4 @@
+# Собирает контейнер для запуска статического сайта через Node.js.
 FROM node:22-alpine
 WORKDIR /app
 COPY --chown=node:node package.json serve.mjs ./
