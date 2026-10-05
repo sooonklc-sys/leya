@@ -1,5 +1,7 @@
 # Статистика ВОЗ и актуальность проекта
 
+[Все документы](README.md) · [О проекте](../README.md).
+
 Источник: [ВОЗ, Global Anaemia Estimates, выпуск 2025 года](https://www.who.int/data/gho/data/themes/topics/anaemia_in_women_and_children). Дата обращения: 4 октября 2026 года.
 
 | Показатель | Оценка | Год, к которому относится оценка | Территория |
