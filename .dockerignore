@@ -1,4 +1,4 @@
-# Only runtime files enter the image and build context.
+# Ограничивает контекст сборки Docker файлами, необходимыми для запуска сайта.
 **
 !Dockerfile
 !package.json
