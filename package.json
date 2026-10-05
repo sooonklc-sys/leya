@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "description": "Лея — исследовательский MVP для разбора анализов и подготовки памятки пациенту",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "node serve.mjs",
     "build": "node build-offline.mjs release/leya.html",
